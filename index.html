@@ -4,11 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Star Lifecycle</title>
+  <!-- Google Fonts: Quicksand -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
   <style>
     html,body{height:100%;margin:0}
     canvas{display:block}
     /* right info box */
-    #infoBox{position:fixed;right:12px;top:12px;width:360px;max-height:80vh;overflow:auto;background:rgba(0,0,0,0.6);color:#fff;padding:12px;border-radius:8px;font-family:Arial;z-index:9998}
+    #infoBox{position:fixed;right:12px;top:12px;width:360px;max-height:80vh;overflow:auto;background:rgba(0,0,0,0.6);color:#fff;padding:12px;border-radius:8px;font-family:'Quicksand', Arial, sans-serif;z-index:9998}
     #infoBox h3{margin:0 0 6px 0;font-size:16px}
     #infoScrollLabel{font-size:12px;color:#ffdca3;margin-left:8px;opacity:0.95}
     .info-topic{margin-bottom:10px;padding:8px;border-radius:6px;background:rgba(255,255,255,0.02)}
@@ -24,6 +26,43 @@
     #infoBox::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.12);border-radius:4px}
   </style>
     <style>
+      #hrDiagramBox {
+        position: fixed;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 340px;
+        height: 320px;
+        background: rgba(10,10,20,0.82);
+        border: 2px solid #444;
+        border-radius: 14px;
+        box-shadow: 0 4px 24px 0 rgba(0,0,0,0.18);
+        z-index: 9998;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-family: 'Quicksand', Arial, sans-serif;
+        font-size: 17px;
+        letter-spacing: 0.01em;
+        text-align: center;
+        pointer-events: none;
+        opacity: 0.97;
+      }
+      #hrDiagramBox .hr-label {
+        color: #ffdca3;
+        font-size: 19px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      #hrDiagramBox .hr-placeholder {
+        color: #b3e0ff;
+        font-size: 15px;
+        margin-top: 8px;
+      }
+    </style>
+    <style>
       #stageFactsBox {
         position: fixed;
         left: 12px;
@@ -34,7 +73,7 @@
         color: #fff;
         padding: 12px 16px 10px 16px;
         border-radius: 8px;
-        font-family: Arial, sans-serif;
+        font-family: 'Quicksand', Arial, sans-serif;
         font-size: 14px;
         z-index: 9999;
         box-shadow: 0 2px 12px 0 rgba(0,0,0,0.18);
@@ -47,15 +86,19 @@
     </style>
   <style>
     /* feature prompt (top center) */
-    #featurePrompt{position:fixed;left:50%;top:12px;transform:translateX(-50%);background:rgba(0,0,0,0.65);color:#fff;padding:8px 12px;border-radius:8px;font-family:Arial;z-index:10001;display:flex;gap:12px;align-items:center}
+    #featurePrompt{position:fixed;left:50%;top:12px;transform:translateX(-50%);background:rgba(0,0,0,0.65);color:#fff;padding:8px 12px;border-radius:8px;font-family:'Quicksand', Arial, sans-serif;z-index:10001;display:flex;gap:12px;align-items:center}
     #featurePrompt label{font-size:13px;display:flex;gap:6px;align-items:center}
     #featureToggle{position:fixed;left:50%;top:12px;transform:translateX(calc(-50% + 260px));z-index:10002;background:rgba(0,0,0,0.6);color:#fff;border:0;padding:6px 8px;border-radius:6px;cursor:pointer}
     #supernovaFlash{position:fixed;left:0;top:0;right:0;bottom:0;background:#fff;opacity:0;pointer-events:none;transition:opacity 400ms;z-index:10003}
   </style>
 </head>
 <body>
+  <div id="hrDiagramBox">
+    <img src="hr-diagram.png" alt="Hertzsprung-Russell Diagram" style="max-width:96%;max-height:82%;border-radius:10px;box-shadow:0 2px 12px #0007;display:block;margin:0 auto;" />
+    <div class="hr-label" style="margin-top:8px;">Hertzsprung–Russell Diagram</div>
+  </div>
   <div id="stageFactsBox" style="display:none"></div>
-  <div id="ui" style="position:fixed;left:12px;top:12px;background:rgba(0,0,0,0.5);color:#fff;padding:10px;border-radius:6px;font-family: Arial; z-index: 9999;">
+  <div id="ui" style="position:fixed;left:12px;top:12px;background:rgba(0,0,0,0.5);color:#fff;padding:10px;border-radius:6px;font-family:'Quicksand', Arial, sans-serif; z-index: 9999;">
     <div style="margin-bottom:6px">Star Type:
       <select id="starType">
         <option value="average">Average Star</option>
@@ -126,7 +169,7 @@
         </div>
       </div>
     </div>
-    <div id="errorOverlay" style="position:fixed;left:12px;bottom:12px;background:rgba(255,10,10,0.95);color:#fff;padding:8px;border-radius:6px;font-family:Arial;display:none;z-index:10000;max-width:320px;white-space:pre-wrap"></div>
+    <div id="errorOverlay" style="position:fixed;left:12px;bottom:12px;background:rgba(255,10,10,0.95);color:#fff;padding:8px;border-radius:6px;font-family:'Quicksand', Arial, sans-serif;display:none;z-index:10000;max-width:320px;white-space:pre-wrap"></div>
 <script type="module">
 // --- Stage facts data ---
 const STAGE_FACTS = {
@@ -1460,6 +1503,7 @@ updateScoreDisplay();
 animate();
 // setup scroll hint for info box
 setupInfoBoxScrollHint();
+
 </script>
 </body>
 </html>
