@@ -94,9 +94,38 @@
 </head>
 <body>
   <div id="hrDiagramBox">
-    <img src="hr-diagram.png" alt="Hertzsprung-Russell Diagram" style="max-width:96%;max-height:82%;border-radius:10px;box-shadow:0 2px 12px #0007;display:block;margin:0 auto;" />
+    <img id="hrDiagramImg" alt="Hertzsprung-Russell Diagram" style="max-width:96%;max-height:82%;border-radius:10px;box-shadow:0 2px 12px #0007;display:block;margin:0 auto;" />
     <div class="hr-label" style="margin-top:8px;">Hertzsprung–Russell Diagram</div>
   </div>
+  <script>
+    (function(){
+      const img = document.getElementById('hrDiagramImg');
+      if (!img) return;
+      const candidates = ['hr-diagram.png','./hr-diagram.png','HR-diagram.png','hr-diagram.PNG'];
+      let idx = 0;
+      const base64 = 'iVBORw0KGgoAAAANSUhEUgAABAAAAAMACAMAAACNZOU/AAADAFBMVEUIEjg4PVXGv6uXlI66tKQsMk6LiYdWonJGf0Fkp0JttUIuuOcdQF9ItNYpeKYvmcQja5UbTHYxsd9TqL5Xqq1OqMR6qz3RgiFer2EgPkJbsEUtVUM6bENNkkVeu0ZkvEZrvUVxv0R8wUKDxEGLxj+Qxz6VyT2byzyizTqozzicwDiyvSfqpRjoshKjeCLhmRxhvsOYuDvBzym2yy/HxB/X0iR9fSapkhnuyAiRgx7wvg/mwAzs2xDn4Cbd2x3M0yHt0gzdyhC7rhfGpRPFlhm9gSGLZCZKNDCPTyptSiu4ayW0SyjJTybgPiTgMyQsHTR6Ki7uNSOrLilOHzLKMSbuPCPvQSPvSSPwTiPwUyPxXCLyZyL0cyH1fCD2hB/2ix73kh34mxz6oxr7qRn8rhf9tBT+uhH+vg//xA3/yg3+0Aj+0wT92Qb83gj84wn66g757hP47xz47yP27iXx6yDs6B7q5xvo5hbl5Rbh4xnc4h3Y4CHU3iPP3CfK2yrF2S3B1y6+1jC61TG00zSt0Dey0jmkxDasyDO3wymNkymytCWepimPrDoQHjmjxT4sMjVFUDQxQjmt0T5ZbjlzjjqEoTxoejUaKzozYl5gt4s4bWxOk2xOl49BfnVXqJDkdSLngyBYs8grVmdgu6xor9EOHkN3x+hSk7I0W38VK08mQmdDc5Z+0/Rho8VIgKAsTnJvu906aYkbNltbv9cjVX0wh7UiX4pCvOLkjh+Gtz1klz/NbCThZyNVo0VnvUxmvlpnv2hlv3RmwH1mwYpmwpdlw6JmxatlxbJmxrlnx71nx8FlyMZmyctnydBoytVoy9tjy99gyuNcyuVYyedRyOlIyOxAx/A3xvMwxfQ1vu86ues7teg9suZAsOQ/rOA/p90/otpBm9VGkc5EiMdDfsBBdbo/bbU8aK8+YKw/WadVV6ZyV6WNWKSlW6S3YKXBYqaNTYptR4lORosySo3PQSbiTCTbWSRzc3lDSFyuqZ1/foAgKEZnaXJTV2ain5UVHDu1Hsm9AAB09klEQVR42uzY0Y7bIBCF4VH7RHnPJTAcBj/tbgtxG9uqtoqiVZpU/3cHF4NnJB8hDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4OGyD8kGn+wWiw+LAc9o0XRcvLJFv7nbl4s6uA11sgPXyo8nqw6vPVT8v7xOx8VNegzZno3XneaPDA...';
+
+      function setEmbedded() {
+        img.src = 'data:image/png;base64,' + base64;
+      }
+
+      function tryCandidate() {
+        if (idx >= candidates.length) { setEmbedded(); return; }
+        const candidate = candidates[idx++];
+        img.onerror = function() {
+          console.warn('H-R image failed to load:', candidate);
+          setTimeout(tryCandidate, 50);
+        };
+        img.src = candidate;
+      }
+
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        tryCandidate();
+      } else {
+        document.addEventListener('DOMContentLoaded', tryCandidate);
+      }
+    })();
+  </script>
   <div id="stageFactsBox" style="display:none"></div>
   <div id="ui" style="position:fixed;left:12px;top:12px;background:rgba(0,0,0,0.5);color:#fff;padding:10px;border-radius:6px;font-family:'Quicksand', Arial, sans-serif; z-index: 9999;">
     <div style="margin-bottom:6px">Star Type:
